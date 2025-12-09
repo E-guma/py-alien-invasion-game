@@ -73,10 +73,7 @@ def start_game(settings, screen, stats, sb, ship, aliens, bullets):
     stats.game_active = True
     settings.initialize_dynamic_settings()
     # Reset the scoreboard elements.
-    sb.prep_score()
-    sb.prep_high_score()
-    sb.prep_level()
-    sb.prep_ships()
+    sb.prep_images()
     # Empty the list of aliens and bullets.
     aliens.empty()
     bullets.empty()
@@ -119,20 +116,25 @@ def check_bullet_alien_collisions(settings, screen, stats, sb, ship, aliens, bul
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     # Update the score if aliens are hit
     if collisions:
-        for aliens_hit in collisions.values():
-            stats.score += settings.alien_points * len(aliens_hit)
-            sb.prep_score()
-        check_high_score(stats, sb)
+        update_score(settings, stats, sb, collisions)    
 
     if len(aliens) == 0:
-        # Destroy existing bullets, speed up game, and create new fleet.
-        bullets.empty()
-        settings.increase_speed()
-        create_fleet(settings, screen, ship, aliens)
-        # Level up
-        stats.level += 1
-        sb.prep_level()
-
+        start_new_level(settings, screen, stats, sb, ship, aliens, bullets)  
+        
+def update_score(settings, stats, sb, collisions):
+    """Updates Score or High score when hit aliens"""
+    for aliens_hit in collisions.values():
+        stats.score += settings.alien_points * len(aliens_hit)
+        sb.prep_score()
+    check_high_score(stats, sb)
+    
+def start_new_level(settings, screen, stats, sb, ship, aliens, bullets):
+    """Destroy existing bullets, speed up game, create new fleet, and level up"""
+    bullets.empty()
+    settings.increase_speed()
+    create_fleet(settings, screen, ship, aliens)
+    stats.level += 1
+    sb.prep_level()
 
 def get_number_aliens_x(settings, alien_width):
     """Determine the number of aliens that fit in a row."""    

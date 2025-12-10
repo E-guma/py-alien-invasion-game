@@ -4,8 +4,7 @@ from os import path
 import pygame
 
 # Get the ship image file path
-current_path = path.dirname(__file__)
-image_path = path.join(current_path, 'images', 'ship.bmp')
+IMAGE_PATH = path.join(path.dirname(__file__), 'images', 'ship.png')
     
 class Ship(pygame.sprite.Sprite):
     """Methods and attributes for modelling ship behaviours"""
@@ -17,14 +16,14 @@ class Ship(pygame.sprite.Sprite):
         self.screen = screen
         
         # Load the image into memory
-        self.image = pygame.image.load(image_path).convert()
+        self.image = pygame.image.load(IMAGE_PATH).convert_alpha()
         # Get the image and screen rect for easy positioning 
         self.rect = self.image.get_frect()
         self.screen_rect = self.screen.get_frect()
         
         # Use the image rect to place it at the bottom center of the screen
         self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
+        self.rect.bottom = self.screen_rect.bottom - 10
         
         # Movement flag
         self.moving_right = False

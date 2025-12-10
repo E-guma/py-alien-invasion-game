@@ -15,15 +15,13 @@ def check_keydown_events(event, settings, screen, stats, sb, ship, aliens, bulle
             # Set left movement True
             ship.moving_left = True
         elif event.key == pygame.K_SPACE:
-            if not stats.game_active:
-                start_game(settings, screen, stats, sb, ship, aliens, bullets)
-            elif stats.game_active:
+            if stats.game_active:
                 # Fire new bullets on screeen
                 fire_bullet(settings, screen, ship, bullets)
         elif event.key == pygame.K_q:
             close_game(stats)            
         elif event.key == pygame.K_p:
-            start_game(settings, screen, stats, ship, aliens, bullets)            
+            start_game(settings, screen, stats, sb, ship, aliens, bullets)            
                 
 def fire_bullet(settings, screen, ship, bullets):
     """Fire a bullet if limit not reached yet."""
@@ -82,10 +80,10 @@ def start_game(settings, screen, stats, sb, ship, aliens, bullets):
     ship.center_ship()
         
             
-def update_screen(screen, settings, stats, sb, ship, aliens, bullets, play_button):
+def update_screen(screen, settings, stats, sb, bg, ship, aliens, bullets, play_button):
     """Updates screen elements on each loop"""
     # Fill the screen with background color.
-    screen.fill(settings.bg_color)
+    bg.draw_background()
     # Draw all bullets behind ship and aliens
     for bullet in bullets.sprites():
         bullet.draw_bullet()

@@ -21,7 +21,8 @@ def check_keydown_events(event, settings, screen, stats, sb, ship, aliens, bulle
         elif event.key == pygame.K_q:
             close_game(stats)            
         elif event.key == pygame.K_p:
-            start_game(settings, screen, stats, sb, ship, aliens, bullets)            
+            if not stats.game_active:
+              start_game(settings, screen, stats, sb, ship, aliens, bullets)            
                 
 def fire_bullet(settings, screen, ship, bullets):
     """Fire a bullet if limit not reached yet."""
